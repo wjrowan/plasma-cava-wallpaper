@@ -123,11 +123,6 @@ WallpaperItem {
         fillMode: root.configuration.FillMode
         asynchronous: true
         cache: true
-        onStatusChanged: {
-            if (status === Image.Ready) {
-                backgroundSample.requestPaint();
-            }
-        }
     }
 
     // Renders a processed copy of `background` on top of it (the plain
@@ -147,8 +142,11 @@ WallpaperItem {
     }
 
     // Off-screen sampling canvas used only for "Adaptive" color mode - reads
-    // the loaded background image down to a few pixels and averages them to
-    // get a base hue. Runs once per image load, not per frame.
+    // the background image down to a few pixels and averages them to get a
+    // base hue. Runs once per image change, not per frame.
+    // Loads the URL into the canvas itself rather than drawing from the
+    // on-screen Image item, so re-sampling is driven by the source URL
+    // changing and can't get stuck on a previously-loaded image.
     Canvas {
         id: backgroundSample
         x: -1000
@@ -156,12 +154,30 @@ WallpaperItem {
         width: 16
         height: 16
         property color averageColor: "#808080"
+        property string sampleSource: root.configuration.Image
+
+        function resample() {
+            if (sampleSource === "") {
+                return;
+            }
+            if (isImageLoaded(sampleSource)) {
+                requestPaint();
+            } else {
+                loadImage(sampleSource);
+            }
+        }
+
+        onSampleSourceChanged: resample()
+        onImageLoaded: requestPaint()
+        Component.onCompleted: resample()
+
         onPaint: {
-            if (background.status !== Image.Ready) {
+            if (sampleSource === "" || !isImageLoaded(sampleSource)) {
                 return;
             }
             const ctx = getContext("2d");
-            ctx.drawImage(background, 0, 0, width, height);
+            ctx.clearRect(0, 0, width, height);
+            ctx.drawImage(sampleSource, 0, 0, width, height);
             const data = ctx.getImageData(0, 0, width, height).data;
             let r = 0, g = 0, b = 0, n = 0;
             for (let i = 0; i < data.length; i += 4) {
