@@ -19,7 +19,19 @@ WallpaperItem {
     readonly property real barOpacity: root.configuration.BarOpacity
     readonly property real adaptiveBaseHue: backgroundSample.averageColor.hslHue
 
-    function withOpacity(c) {
+    // Helper to coerce a plain hex string (BarColorTop/BarColorBottom are
+    // kcfg String entries, not Color entries - see main.xml comment) into an
+    // actual QML color value. Property access like `"#fff".r` on a raw JS
+    // string is undefined; assigning through a color-typed property is the
+    // reliable way to get the real conversion.
+    property color _colorHelper
+    function toColor(hex) {
+        _colorHelper = hex;
+        return _colorHelper;
+    }
+
+    function withOpacity(hex) {
+        const c = toColor(hex);
         return Qt.rgba(c.r, c.g, c.b, root.barOpacity);
     }
 

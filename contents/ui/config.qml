@@ -11,14 +11,14 @@ Kirigami.FormLayout {
     property alias formLayout: root
 
     property string cfg_Image
-    property int cfg_FillMode
+    property alias cfg_FillMode: fillModeCombo.currentIndex
     property alias cfg_Framerate: framerateSpinbox.value
     property alias cfg_BarCount: barCountSpinbox.value
     property alias cfg_BarGap: barGapSpinbox.value
     property alias cfg_BarMaxHeight: barMaxHeightSpinbox.value
     property alias cfg_BarTopMargin: barTopMarginSpinbox.value
     property alias cfg_BarBottomMargin: barBottomMarginSpinbox.value
-    property int cfg_ColorMode
+    property alias cfg_ColorMode: colorModeCombo.currentIndex
     property alias cfg_BarColorTop: topColorButton.colorHex
     property alias cfg_BarColorBottom: bottomColorButton.colorHex
     property alias cfg_BarOpacity: opacitySlider.value
@@ -56,14 +56,10 @@ Kirigami.FormLayout {
     QQC2.ComboBox {
         id: fillModeCombo
         Kirigami.FormData.label: "Fill mode:"
-        textRole: "text"
-        model: [
-            { text: "Scaled and Cropped", value: 2 },
-            { text: "Scaled", value: 1 },
-            { text: "Stretched", value: 0 }
-        ]
-        Component.onCompleted: currentIndex = model.findIndex(m => m.value === root.cfg_FillMode)
-        onActivated: root.cfg_FillMode = model[currentIndex].value
+        // List index must match QML Image.fillMode's int value directly
+        // (Stretch=0, PreserveAspectFit=1, PreserveAspectCrop=2) so
+        // cfg_FillMode can alias currentIndex with no extra glue code.
+        model: ["Stretched", "Scaled", "Scaled and Cropped"]
     }
 
     Kirigami.Separator {
@@ -116,14 +112,9 @@ Kirigami.FormLayout {
     QQC2.ComboBox {
         id: colorModeCombo
         Kirigami.FormData.label: "Bar color:"
-        textRole: "text"
-        model: [
-            { text: "Solid", value: 0 },
-            { text: "Rainbow", value: 1 },
-            { text: "Adaptive (from background)", value: 2 }
-        ]
-        Component.onCompleted: currentIndex = model.findIndex(m => m.value === root.cfg_ColorMode)
-        onActivated: root.cfg_ColorMode = model[currentIndex].value
+        // List index doubles as the stored mode value (0=Solid, 1=Rainbow,
+        // 2=Adaptive) - same reasoning as fillModeCombo above.
+        model: ["Solid", "Rainbow", "Adaptive (from background)"]
     }
 
     ColorPickerButton {
