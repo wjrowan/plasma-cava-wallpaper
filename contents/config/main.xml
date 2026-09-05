@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kcfg xmlns="http://www.kde.org/standards/kcfg/1.0"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
+      http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
+  <kcfgfile name=""/>
+
+  <group name="General">
+    <entry name="Image" type="String">
+      <default></default>
+    </entry>
+    <!-- QML Image.fillMode: Stretch=0, PreserveAspectFit=1, PreserveAspectCrop=2 -->
+    <entry name="FillMode" type="Int">
+      <default>2</default>
+    </entry>
+    <entry name="Framerate" type="Int">
+      <default>30</default>
+    </entry>
+    <!-- CAVA aborts above 512 bars; also enforced defensively in main.qml -->
+    <entry name="BarCount" type="Int">
+      <default>25</default>
+    </entry>
+    <entry name="BarGap" type="Int">
+      <default>6</default>
+    </entry>
+    <entry name="BarMaxHeight" type="Int">
+      <default>120</default>
+    </entry>
+    <entry name="BarTopMargin" type="Int">
+      <default>0</default>
+    </entry>
+    <!-- so the bottom row clears a panel docked at the screen edge -->
+    <entry name="BarBottomMargin" type="Int">
+      <default>48</default>
+    </entry>
+    <!-- 0=Solid, 1=Rainbow, 2=Adaptive (tinted from the background image) -->
+    <entry name="ColorMode" type="Int">
+      <default>0</default>
+    </entry>
+    <!-- Plain opaque RGB hex, only used in Solid mode. Deliberately NOT a
+         kcfg "Color" entry: that type is known to drop the alpha channel on
+         save, which is why opacity kept resetting. Opacity is its own
+         separate numeric entry below instead. -->
+    <entry name="BarColorTop" type="String">
+      <default>#ffffff</default>
+    </entry>
+    <entry name="BarColorBottom" type="String">
+      <default>#ffffff</default>
+    </entry>
+    <entry name="BarOpacity" type="Double">
+      <default>0.85</default>
+    </entry>
+    <entry name="NoiseReduction" type="Int">
+      <default>77</default>
+    </entry>
+    <entry name="AutoSensitivity" type="Bool">
+      <default>true</default>
+    </entry>
+  </group>
+</kcfg>
