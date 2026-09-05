@@ -1,3 +1,10 @@
+// SPDX-License-Identifier: GPL-3.0
+//
+// Derived from ProcessMonitorFallback.qml in luisbocanegra/kurve (GPL-3.0):
+// https://github.com/luisbocanegra/kurve
+// Adapted to drop the Plasmoid.configuration-based logger, which isn't
+// available inside a Wallpaper's QML context.
+
 import QtQuick
 import QtWebSockets
 

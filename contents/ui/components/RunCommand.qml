@@ -1,3 +1,8 @@
+// SPDX-License-Identifier: GPL-3.0
+//
+// Copied verbatim from luisbocanegra/kurve (GPL-3.0):
+// https://github.com/luisbocanegra/kurve
+
 import QtQuick
 import org.kde.plasma.plasma5support as P5Support
 

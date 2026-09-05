@@ -1,11 +1,18 @@
 {
     "KPackageStructure": "Plasma/Wallpaper",
     "KPlugin": {
+        "Authors": [
+            {
+                "Name": "wjrowan"
+            }
+        ],
         "Description": "Background image with CAVA-driven audio bars pinned to the top and bottom of the screen.",
         "Icon": "audio-volume-high",
         "Id": "com.github.willi.cavawallpaper",
-        "License": "MIT",
-        "Name": "Cava Top/Bottom Bars"
+        "License": "GPL-3.0",
+        "Name": "Cava Top/Bottom Bars",
+        "Version": "1.0.0",
+        "Website": "https://github.com/wjrowan/plasma-cava-wallpaper"
     },
     "X-KDE-ParentApp": "org.kde.plasmashell"
 }

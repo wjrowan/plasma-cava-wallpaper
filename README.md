@@ -17,19 +17,33 @@ top of a static one underneath it.
 CAVA itself is cheap regardless of placement - profiled at ~1% CPU even at
 254 bars in [kurve#164](https://github.com/luisbocanegra/kurve/issues/164).
 
+## Requirements
+
+- KDE Plasma 6
+- [`cava`](https://github.com/karlstav/cava)
+- Python 3 with the `websockets` package (used to stream CAVA's output into
+  QML)
+
 ## Install
 
 ```bash
-git clone <this repo> ~/.local/share/plasma/wallpapers/com.github.willi.cavawallpaper
+git clone https://github.com/wjrowan/plasma-cava-wallpaper.git ~/.local/share/plasma/wallpapers/com.github.willi.cavawallpaper
 systemctl --user restart plasma-plasmashell.service
 ```
 
 Then: right-click Desktop → Configure Desktop and Wallpaper → Wallpaper Type
 → "Cava Top/Bottom Bars".
 
+Note the clone target directory name must stay
+`com.github.willi.cavawallpaper` - it has to match the plugin id in
+`metadata.json` for Plasma to find it.
+
 ## Settings
 
 - Background image + fill mode
+- Beat-reactive background effects: bass-driven zoom pulse, plus
+  brightness/saturation pulse driven by overall energy (each with its own
+  intensity slider, and a master on/off)
 - Framerate, bar count, bar gap, bar max height
 - Top/bottom row offset (px) - nudge a row off the screen edge, e.g. so the
   bottom row clears a panel docked there
@@ -39,11 +53,23 @@ Then: right-click Desktop → Configure Desktop and Wallpaper → Wallpaper Type
 - Bar opacity
 - Noise reduction, automatic sensitivity
 
+## License
+
+GPL-3.0 - see [LICENSE](LICENSE).
+
+This project incorporates code from
+[luisbocanegra/kurve](https://github.com/luisbocanegra/kurve), which is
+GPL-3.0, so this derivative work is GPL-3.0 as well.
+
 ## Credit
 
 The CAVA process integration (`Cava.qml`, `components/ProcessMonitor.qml`,
-`components/RunCommand.qml`, `tools/commandMonitor`) is adapted from
+`components/RunCommand.qml`, `tools/commandMonitor`) is taken from
 [luisbocanegra/kurve](https://github.com/luisbocanegra/kurve) (formerly
-`luisbocanegra.audio.visualizer`), an Applet-based CAVA visualizer widget.
-This project is a separate, from-scratch Wallpaper plugin that reuses that
-proven process-spawning approach rather than depending on the widget itself.
+`luisbocanegra.audio.visualizer`), an Applet-based CAVA visualizer widget -
+`Cava.qml`, `RunCommand.qml` and `commandMonitor` are verbatim copies, and
+`ProcessMonitor.qml` is adapted from its `ProcessMonitorFallback.qml`. Those
+files carry SPDX headers noting their origin.
+
+The rest - the Wallpaper-plugin structure, bar rendering, color modes and
+beat-reactive background effects - is written for this project.

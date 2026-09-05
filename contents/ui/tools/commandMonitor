@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+#
+# SPDX-License-Identifier: GPL-3.0
+#
+# Copied verbatim from luisbocanegra/kurve (GPL-3.0):
+# https://github.com/luisbocanegra/kurve
 
 import os
 import asyncio
