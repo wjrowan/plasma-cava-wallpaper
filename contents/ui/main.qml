@@ -1,4 +1,5 @@
 import QtQuick
+import QtQuick.Effects
 import org.kde.plasma.plasmoid
 
 WallpaperItem {
@@ -65,6 +66,50 @@ WallpaperItem {
         return gradientColor(index);
     }
 
+    // --- Beat-reactive background (bass zoom + energy brightness/saturation) ---
+    readonly property bool backgroundEffectsEnabled: root.configuration.BackgroundEffectsEnabled
+    readonly property real zoomIntensity: root.configuration.ZoomIntensity
+    readonly property real brightnessIntensity: root.configuration.BrightnessIntensity
+    readonly property real saturationIntensity: root.configuration.SaturationIntensity
+
+    // Fraction moved toward the new target each CAVA frame: fast attack (hits
+    // punch in immediately), slow decay (fades back out smoothly) - the
+    // usual asymmetric smoothing behind any VU-meter-style animation.
+    readonly property real energyAttack: 0.6
+    readonly property real energyDecay: 0.08
+
+    property real smoothedBass: 0
+    property real smoothedEnergy: 0
+
+    function updateEnergies() {
+        const vals = cava.values;
+        if (!vals || vals.length === 0) {
+            return;
+        }
+        const bassCount = Math.max(1, Math.round(vals.length * 0.15));
+        let bassSum = 0;
+        for (let i = 0; i < bassCount; i++) {
+            bassSum += vals[i];
+        }
+        const rawBass = (bassSum / bassCount) / root.cavaValueRange;
+
+        let totalSum = 0;
+        for (let i = 0; i < vals.length; i++) {
+            totalSum += vals[i];
+        }
+        const rawEnergy = (totalSum / vals.length) / root.cavaValueRange;
+
+        root.smoothedBass += (rawBass - root.smoothedBass) * (rawBass > root.smoothedBass ? root.energyAttack : root.energyDecay);
+        root.smoothedEnergy += (rawEnergy - root.smoothedEnergy) * (rawEnergy > root.smoothedEnergy ? root.energyAttack : root.energyDecay);
+    }
+
+    Connections {
+        target: cava
+        function onValuesChanged() {
+            root.updateEnergies();
+        }
+    }
+
     Rectangle {
         anchors.fill: parent
         color: "#101010"
@@ -83,6 +128,22 @@ WallpaperItem {
                 backgroundSample.requestPaint();
             }
         }
+    }
+
+    // Renders a processed copy of `background` on top of it (the plain
+    // Image above stays as-is underneath, fully covered by this - MultiEffect
+    // is a single lightweight shader pass, no blur, so this is cheap).
+    // Zoom is applied as this item's own scale rather than the source
+    // Image's, since it's the thing actually on screen.
+    MultiEffect {
+        id: backgroundEffect
+        anchors.fill: background
+        source: background
+        visible: root.backgroundEffectsEnabled
+        transformOrigin: Item.Center
+        scale: 1.0 + root.smoothedBass * root.zoomIntensity
+        brightness: root.smoothedEnergy * root.brightnessIntensity
+        saturation: root.smoothedEnergy * root.saturationIntensity
     }
 
     // Off-screen sampling canvas used only for "Adaptive" color mode - reads

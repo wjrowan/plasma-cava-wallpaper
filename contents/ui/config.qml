@@ -24,6 +24,10 @@ Kirigami.FormLayout {
     property alias cfg_BarOpacity: opacitySlider.value
     property alias cfg_NoiseReduction: noiseReductionSpinbox.value
     property alias cfg_AutoSensitivity: autoSensitivityCheckbox.checked
+    property alias cfg_BackgroundEffectsEnabled: backgroundEffectsCheckbox.checked
+    property alias cfg_ZoomIntensity: zoomIntensitySlider.value
+    property alias cfg_BrightnessIntensity: brightnessIntensitySlider.value
+    property alias cfg_SaturationIntensity: saturationIntensitySlider.value
 
     // CAVA aborts above this many bars.
     readonly property int cavaMaxBars: 512
@@ -60,6 +64,40 @@ Kirigami.FormLayout {
         // (Stretch=0, PreserveAspectFit=1, PreserveAspectCrop=2) so
         // cfg_FillMode can alias currentIndex with no extra glue code.
         model: ["Stretched", "Scaled", "Scaled and Cropped"]
+    }
+
+    Kirigami.Separator {
+        Kirigami.FormData.isSection: true
+        Kirigami.FormData.label: "Background effects"
+    }
+
+    QQC2.CheckBox {
+        id: backgroundEffectsCheckbox
+        Kirigami.FormData.label: "Beat-reactive background:"
+    }
+
+    QQC2.Slider {
+        id: zoomIntensitySlider
+        Kirigami.FormData.label: "Bass zoom:"
+        enabled: backgroundEffectsCheckbox.checked
+        from: 0
+        to: 0.3
+    }
+
+    QQC2.Slider {
+        id: brightnessIntensitySlider
+        Kirigami.FormData.label: "Brightness pulse:"
+        enabled: backgroundEffectsCheckbox.checked
+        from: 0
+        to: 0.5
+    }
+
+    QQC2.Slider {
+        id: saturationIntensitySlider
+        Kirigami.FormData.label: "Saturation pulse:"
+        enabled: backgroundEffectsCheckbox.checked
+        from: 0
+        to: 0.5
     }
 
     Kirigami.Separator {

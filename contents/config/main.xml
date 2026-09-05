@@ -56,5 +56,20 @@
     <entry name="AutoSensitivity" type="Bool">
       <default>true</default>
     </entry>
+    <entry name="BackgroundEffectsEnabled" type="Bool">
+      <default>true</default>
+    </entry>
+    <!-- Max extra scale on the hardest bass hit, e.g. 0.04 = 4% zoom -->
+    <entry name="ZoomIntensity" type="Double">
+      <default>0.04</default>
+    </entry>
+    <!-- MultiEffect.brightness swing (-1..1 range) driven by overall energy -->
+    <entry name="BrightnessIntensity" type="Double">
+      <default>0.12</default>
+    </entry>
+    <!-- MultiEffect.saturation swing (-1..1 range) driven by overall energy -->
+    <entry name="SaturationIntensity" type="Double">
+      <default>0.15</default>
+    </entry>
   </group>
 </kcfg>
