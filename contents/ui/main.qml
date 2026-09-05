@@ -110,19 +110,50 @@ WallpaperItem {
         }
     }
 
+    // With no image configured (i.e. a fresh install) fall back to a stock
+    // system wallpaper. Which ones exist varies by distro, so try each in
+    // turn and move on when one fails to load, rather than hardcoding a
+    // single path that would leave some systems on the blank gradient.
+    // "Next" ships with Plasma itself, so it's the most portable first pick.
+    readonly property var stockWallpapers: ["/usr/share/wallpapers/Next/contents/images/5120x2880.png", "/usr/share/wallpapers/Next/contents/images/7680x2160.png", "/usr/share/backgrounds/default.png", "/usr/share/wallpapers/default.png"]
+    property int stockIndex: 0
+
+    readonly property string effectiveImage: {
+        if (root.configuration.Image !== "") {
+            return root.configuration.Image;
+        }
+        if (stockIndex < stockWallpapers.length) {
+            return "file://" + stockWallpapers[stockIndex];
+        }
+        return "";
+    }
+
+    // Shown until an image is up, and permanently if none of the candidates
+    // resolve. A gentle gradient rather than flat black so an unconfigured
+    // first run still reads as deliberate.
     Rectangle {
         anchors.fill: parent
-        color: "#101010"
         visible: background.status !== Image.Ready
+        gradient: Gradient {
+            GradientStop { position: 0.0; color: "#181a24" }
+            GradientStop { position: 1.0; color: "#0b0c11" }
+        }
     }
 
     Image {
         id: background
         anchors.fill: parent
-        source: root.configuration.Image
+        source: root.effectiveImage
         fillMode: root.configuration.FillMode
         asynchronous: true
         cache: true
+        onStatusChanged: {
+            // Only walk the candidate list while running on the built-in
+            // default; a user-picked image that fails is their own to fix.
+            if (status === Image.Error && root.configuration.Image === "" && root.stockIndex < root.stockWallpapers.length) {
+                root.stockIndex++;
+            }
+        }
     }
 
     // Renders a processed copy of `background` on top of it (the plain
@@ -154,7 +185,9 @@ WallpaperItem {
         width: 16
         height: 16
         property color averageColor: "#808080"
-        property string sampleSource: root.configuration.Image
+        // Tracks the resolved image (which may be a stock fallback), not the
+        // raw config value, so Adaptive mode works on a fresh install too.
+        property string sampleSource: root.effectiveImage
 
         function resample() {
             if (sampleSource === "") {

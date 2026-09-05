@@ -11,7 +11,7 @@
         "Id": "com.github.willi.cavawallpaper",
         "License": "GPL-3.0",
         "Name": "Cava Top/Bottom Bars",
-        "Version": "1.0.0",
+        "Version": "1.0.1",
         "Website": "https://github.com/wjrowan/plasma-cava-wallpaper"
     },
     "X-KDE-ParentApp": "org.kde.plasmashell"

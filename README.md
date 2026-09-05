@@ -38,9 +38,13 @@ Note the clone target directory name must stay
 `com.github.willi.cavawallpaper` - it has to match the plugin id in
 `metadata.json` for Plasma to find it.
 
+Out of the box it uses your system's stock wallpaper with adaptive (background-tinted) bar colors, so it looks reasonable before you configure anything.
+
 ## Settings
 
-- Background image + fill mode
+- Background image + fill mode. Leave the image empty to use a stock system
+  wallpaper - several common distro paths are tried in turn, falling back to
+  a dark gradient if none are present.
 - Beat-reactive background effects: bass-driven zoom pulse, plus
   brightness/saturation pulse driven by overall energy (each with its own
   intensity slider, and a master on/off)

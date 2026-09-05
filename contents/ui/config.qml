@@ -37,6 +37,7 @@ Kirigami.FormLayout {
         QQC2.TextField {
             id: imagePathField
             text: root.cfg_Image
+            placeholderText: "Leave empty to use the system wallpaper"
             Layout.fillWidth: true
             Layout.minimumWidth: 300
             onEditingFinished: root.cfg_Image = text

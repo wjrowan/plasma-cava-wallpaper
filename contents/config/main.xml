@@ -6,6 +6,8 @@
   <kcfgfile name=""/>
 
   <group name="General">
+    <!-- Empty means "auto": main.qml falls back to a stock system wallpaper,
+         trying each candidate in turn (paths vary by distro). -->
     <entry name="Image" type="String">
       <default></default>
     </entry>
@@ -31,11 +33,11 @@
     </entry>
     <!-- so the bottom row clears a panel docked at the screen edge -->
     <entry name="BarBottomMargin" type="Int">
-      <default>48</default>
+      <default>40</default>
     </entry>
     <!-- 0=Solid, 1=Rainbow, 2=Adaptive (tinted from the background image) -->
     <entry name="ColorMode" type="Int">
-      <default>0</default>
+      <default>2</default>
     </entry>
     <!-- Plain opaque RGB hex, only used in Solid mode. Deliberately NOT a
          kcfg "Color" entry: that type is known to drop the alpha channel on
