@@ -3,6 +3,18 @@
 A KDE Plasma 6 Wallpaper plugin: your background image with CAVA-driven audio
 bars pinned to the top and bottom of the screen.
 
+> **License and attribution at a glance**
+>
+> This project is **GPL-3.0** ([LICENSE](LICENSE)).
+>
+> It is **not** entirely original work. Its CAVA process integration is taken
+> from **[luisbocanegra/kurve](https://github.com/luisbocanegra/kurve)**, by
+> **Luis Bocanegra**, which is licensed **GPL-3.0**. GPL-3.0 permits reuse and
+> modification provided the derivative work is also GPL-3.0 - which this is.
+> The affected files carry SPDX headers naming their origin. See
+> [License](#license) and [Credit](#credit) below for the file-by-file
+> breakdown.
+
 ## Why a Wallpaper plugin, not an Applet
 
 Placing an audio visualizer Applet directly on the Desktop (rather than in a
